@@ -1,116 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright (C) 2015 Red Hat, Inc
+<!-- Copyright (C) 2015 Red Hat, Inc Licensed under the Apache License, Version 
+	2.0 (the "License"); you may not use this file except in compliance with 
+	the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+	Unless required by applicable law or agreed to in writing, software distributed 
+	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	the specific language governing permissions and limitations under the License. -->
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>io.fabric8.kubeflix</groupId>
+		<artifactId>kubeflix-project</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 
-          http://www.apache.org/licenses/LICENSE-2.0
+	<groupId>io.fabric8.kubeflix</groupId>
+	<artifactId>turbine-server</artifactId>
+	<packaging>war</packaging>
+	<name>Kubeflix :: Turbine :: Server</name>
+	<description>Turbine server with the Kubernetes discovery module pre-installed and pre-configured</description>
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
+	<properties>
+		<docker.from>docker.io/fabric8/jetty-9:1.0.0</docker.from>
+		<fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+		<docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+		<docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
+		<docker.port.container.jolokia>8778</docker.port.container.jolokia>
+		<docker.port.container.http>8080</docker.port.container.http>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>io.fabric8.kubeflix</groupId>
-        <artifactId>kubeflix-project</artifactId>
-        <version>1.1-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+		<fabric8.service.name>${project.artifactId}</fabric8.service.name>
+		<fabric8.service.port>80</fabric8.service.port>
+		<fabric8.service.containerPort>8080</fabric8.service.containerPort>
+		<fabric8.service.type>LoadBalancer</fabric8.service.type>
+		<fabric8.serviceAccount>turbine</fabric8.serviceAccount>
+		<fabric8.serviceAccountCreate>true</fabric8.serviceAccountCreate>
+		<fabric8.iconUrl>https://raw.githubusercontent.com/fabric8io/kubeflix/master/turbine-server/src/main/fabric8/logo.png</fabric8.iconUrl>
+		<fabric8.annotations.service.servicepath>/turbine.stream</fabric8.annotations.service.servicepath>
+	</properties>
 
-    <groupId>io.fabric8.kubeflix</groupId>
-    <artifactId>turbine-server</artifactId>
-    <packaging>war</packaging>
-    <name>Kubeflix :: Turbine :: Server</name>
-    <description>Turbine server with the Kubernetes discovery module pre-installed and pre-configured</description>
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.fabric8.kubeflix</groupId>
+			<artifactId>turbine-discovery</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
+		</dependency>
+	</dependencies>
 
-    <properties>
-        <docker.from>docker.io/fabric8/jetty-9:1.0.0</docker.from>
-        <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-        <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-        <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
-        <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-        <docker.port.container.http>8080</docker.port.container.http>
-
-        <fabric8.service.name>${project.artifactId}</fabric8.service.name>
-        <fabric8.service.port>80</fabric8.service.port>
-        <fabric8.service.containerPort>8080</fabric8.service.containerPort>
-        <fabric8.service.type>LoadBalancer</fabric8.service.type>
-        <fabric8.serviceAccount>turbine</fabric8.serviceAccount>
-        <fabric8.serviceAccountCreate>true</fabric8.serviceAccountCreate>
-        <fabric8.iconUrl>https://raw.githubusercontent.com/fabric8io/kubeflix/master/turbine-server/src/main/fabric8/logo.png</fabric8.iconUrl>
-        <fabric8.annotations.service.servicepath>/turbine.stream</fabric8.annotations.service.servicepath>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.fabric8.kubeflix</groupId>
-            <artifactId>turbine-discovery</artifactId>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${docker.image}</name>
-                            <build>
-                                <from>${docker.from}</from>
-                                <assembly>
-                                    <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
-                                </assembly>
-                                <env>
-                                    <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
-                                </env>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>json</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>json</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>attach</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>${docker.image}</name>
+							<build>
+								<from>${docker.from}</from>
+								<assembly>
+									<descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+								</assembly>
+								<env>
+									<CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
+								</env>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>json</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>json</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>attach</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>io.fabric8</groupId>
+										<artifactId>
+											fabric8-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2.101,)
+										</versionRange>
+										<goals>
+											<goal>json</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

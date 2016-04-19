@@ -16,15 +16,24 @@
 
 package io.fabric8.kubeflix;
 
+import java.util.HashMap;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.netflix.turbine.plugins.PluginsFactory;
-import io.fabric8.kubeflix.discovery.KubernetesDiscovery;
+import org.apache.commons.configuration.EnvironmentConfiguration;
+import org.apache.commons.configuration.MapConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.netflix.config.ConcurrentCompositeConfiguration;
+import com.netflix.config.ConfigurationManager;
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import com.netflix.turbine.init.TurbineInit;
+import com.netflix.turbine.plugins.PluginsFactory;
+
+import io.fabric8.kubeflix.discovery.KubernetesDiscovery;
 
 public class StartTurbineServer implements ServletContextListener {
 
@@ -33,6 +42,16 @@ public class StartTurbineServer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.info("Initing Turbine server");
+		EnvironmentConfiguration configFromSystemProperties = new EnvironmentConfiguration();
+		MapConfiguration mapConfig=new MapConfiguration(new HashMap<String, Object>());
+		// hack to workaround kubernetes yaml file limitation on property name (Must be a C identifier)
+		mapConfig.addProperty("turbine.instanceUrlSuffix", configFromSystemProperties.getProperty("turbineInstanceUrlSuffix"));
+		ConcurrentCompositeConfiguration finalConfig = new ConcurrentCompositeConfiguration();
+		finalConfig.addConfiguration(mapConfig, "mapConfig");
+		finalConfig.addConfiguration(configFromSystemProperties, "systemConfig");
+		ConfigurationManager.install(finalConfig);
+		DynamicStringProperty prop = DynamicPropertyFactory.getInstance().getStringProperty("turbine.instanceUrlSuffix",null);
+		logger.debug("using turbine.instanceUrlSuffix:" + prop.getValue());         
         PluginsFactory.setInstanceDiscovery(new KubernetesDiscovery());
         TurbineInit.init();
     }
