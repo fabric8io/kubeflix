@@ -101,7 +101,7 @@
         <spring-cloud-sleuth.version>1.0.6.RELEASE</spring-cloud-sleuth.version>
 
         <!-- Maven Plugin Versions -->
-        <docker-maven-plugin.version>0.14.2</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.15.16</docker-maven-plugin.version>
         <fabric8.maven.plugin.version>3.1.17</fabric8.maven.plugin.version>
         <jetty-maven-plugin.version>9.3.7.v20160115</jetty-maven-plugin.version>
         <maven-compiler-plugin.version>3.5</maven-compiler-plugin.version>
