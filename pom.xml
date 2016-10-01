@@ -82,7 +82,7 @@
         <jackson2.version>2.7.0</jackson2.version>
         <fabric8.version>2.2.168</fabric8.version>
         <groovy.version>2.4.1</groovy.version>
-        <kubernetes-client.version>1.4.6</kubernetes-client.version>
+        <kubernetes-client.version>1.4.7</kubernetes-client.version>
         <mockwebserver.version>0.0.4</mockwebserver.version>
         <netty.version>4.0.27.Final</netty.version>
         <rxjava.version>1.1.9</rxjava.version>
@@ -101,7 +101,7 @@
         <spring-cloud-sleuth.version>1.0.6.RELEASE</spring-cloud-sleuth.version>
 
         <!-- Maven Plugin Versions -->
-        <docker-maven-plugin.version>0.14.2</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.15.16</docker-maven-plugin.version>
         <fabric8.maven.plugin.version>3.1.17</fabric8.maven.plugin.version>
         <jetty-maven-plugin.version>9.3.7.v20160115</jetty-maven-plugin.version>
         <maven-compiler-plugin.version>3.5</maven-compiler-plugin.version>
