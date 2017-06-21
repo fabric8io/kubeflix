@@ -87,7 +87,7 @@
         <groovy.version>2.4.1</groovy.version>
         <kubernetes-client.version>1.4.14</kubernetes-client.version>
         <mockwebserver.version>0.0.4</mockwebserver.version>
-        <netty.version>4.0.27.Final</netty.version>
+        <netty.version>4.1.4.Final</netty.version>
         <rxjava.version>1.1.9</rxjava.version>
         <rxnetty.version>0.4.18</rxnetty.version>
         <ribbon.version>2.2.0</ribbon.version>
