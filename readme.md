@@ -72,6 +72,10 @@ Example:
 For creating the url to each individual hystrix stream, turbine is using the instance ip and appends a suffix specified by the ``turbine.instanceUrlSuffix``.
 To configure this property via env variable you just need to set an environment variable with name ``TURBINE_INSTANCEURLSUFFIX``.
 
+For specifying which application(s) that will belong to a cluster with the ``turbine.aggregator.clusters.<cluster name>`` configuration property,
+ you set the environment variable as ``TURBINE_AGGREGATOR_CLUSTERS_<cluster name>``. Note that the case of ``<cluster name>`` must match how it
+ is specified with ``TURBINE_AGGREGATOR_CLUSTERCONFIG``.
+
 #### Using ConfigMap
 
 The turbine server is powered by [Spring Cloud Kubernetes](https://github.com/fabric8io/spring-cloud-kubernetes) which among other allows you to externalize your ``application.yml`` in a [ConfigMap](http://kubernetes.io/docs/user-guide/configmap/).
@@ -101,7 +105,7 @@ or if we would like **all** service of the ``foo`` namespace:
     turbine.aggregator.clusters.example=foo.*
 
     
-Note, that the option can be also provided as environment variables (e.g. TURBINE_AGGREGATOR_CLUSTER_FOO) or even via ConfigMap as described above.
+Note, that the option can be also provided as environment variables (e.g. ``TURBINE_AGGREGATOR_CLUSTER_example``) or even via ConfigMap as described above.
 
 ## Ribbon Discovery
 
