@@ -28,7 +28,7 @@ Turbine is meant to discover and aggregate Hystrix metrics streams, so that its 
 For use inside Kubernetes the project provides a special discovery module called turbine-discovery:
 
     <dependency>
-        <groupd>io.fabric8.kubeflix</groupId>
+        <groupId>io.fabric8.kubeflix</groupId>
         <artifactId>turbine-discovery</artifactId>
         <version>x.y.z</version>
     </dependency>    
