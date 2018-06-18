@@ -83,7 +83,7 @@
         <guava.version>19.0</guava.version>
         <hystrix.version>1.5.6</hystrix.version>
         <jackson2.version>2.7.0</jackson2.version>
-        <fabric8.version>3.0.7</fabric8.version>
+        <fabric8.version>3.0.12</fabric8.version>
         <groovy.version>2.4.1</groovy.version>
         <kubernetes-client.version>1.4.14</kubernetes-client.version>
         <mockwebserver.version>0.0.4</mockwebserver.version>
