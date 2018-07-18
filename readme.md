@@ -101,7 +101,7 @@ or if we would like **all** service of the ``foo`` namespace:
     turbine.aggregator.clusters.example=foo.*
 
     
-Note, that the option can be also provided as environment variables (e.g. TURBINE_AGGREGATOR_CLUSTER_FOO) or even via ConfigMap as described above.
+Note, that the option can be also provided as environment variables (e.g. TURBINE_AGGREGATOR_CLUSTERS_FOO) or even via ConfigMap as described above.
 
 ## Ribbon Discovery
 
