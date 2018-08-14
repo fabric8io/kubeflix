@@ -25,7 +25,7 @@ public class HelloCommand extends HystrixCommand<String> {
 
 
     protected HelloCommand() {
-        super(HystrixCommandGroupKey.Factory.asKey("HelloGroup"));
+        super(HystrixCommandGroupKey.Factory.asKey("HelloRibbonGroup"));
     }
 
     @Override

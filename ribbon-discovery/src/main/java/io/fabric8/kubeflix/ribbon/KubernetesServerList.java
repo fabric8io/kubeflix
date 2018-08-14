@@ -61,6 +61,7 @@ public class KubernetesServerList extends AbstractServerList<Server> implements 
     }
 
     public void initWithNiwsConfig(IClientConfig clientConfig) {
+        this.client = new DefaultKubernetesClient();
         this.clientConfig = clientConfig;
         this.name = clientConfig.getClientName();
         this.namespace = clientConfig.getPropertyAsString(KubernetesConfigKey.Namespace, client.getNamespace());
